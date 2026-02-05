@@ -1,0 +1,34 @@
+<main class="main-content">
+  <div class="container">
+    <h2 class="section-title">Próximas reuniones</h2>
+
+    <div class="meetings-list">
+      <div *ngIf="loading">Cargando reuniones...</div>
+      <div *ngIf="!loading && meetings.length === 0">No hay reuniones programadas actualmente.</div>
+
+      <div class="meeting-row" *ngFor="let meeting of meetings">
+
+        <div class="info-block main-info">
+          <p class="date-text">{{ meeting.displayDate }} {{ meeting.time }}</p>
+        </div>
+
+        <div class="info-block teacher-info">
+          <p class="teacher-name">{{ meeting.studentName }}</p>
+        </div>
+
+        <div class="action-block">
+          <!-- Si es hoy y está en curso (ventana de 1h) -->
+          <button *ngIf="meeting.statusLabel === 'en-curso'" class="btn btn-green" disabled>
+            En curso
+          </button>
+
+          <!-- Si es futura -->
+          <button *ngIf="meeting.statusLabel === 'proximamente'" class="btn btn-gray" disabled>
+            Próximamente
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>

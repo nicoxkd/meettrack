@@ -1,0 +1,206 @@
+.past-meetings-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.search-container {
+  margin-bottom: 30px;
+}
+
+.search-box {
+  position: relative;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.search-input {
+  width: 100%;
+  padding: 15px 15px 15px 45px;
+  font-size: 1rem;
+  border: 2px solid #333;
+  border-radius: 25px;
+  background-color: white;
+  outline: none;
+}
+
+.search-input::placeholder {
+  color: #666;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+.filter-label {
+  font-weight: bold;
+  color: #333;
+  font-size: 1rem;
+}
+
+.filter-btn {
+  background-color: white;
+  color: #333;
+  border: 1px solid #ccc;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.filter-btn:hover {
+  background-color: #e3f2fd;
+  border-color: #1e88e5;
+}
+
+.filter-btn.active {
+  background-color: #1e88e5;
+  color: white;
+  border-color: #1e88e5;
+}
+
+.apply-filters-btn {
+  background-color: #1e88e5;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+  margin-left: auto;
+}
+
+.apply-filters-btn:hover {
+  background-color: #1565c0;
+}
+
+.table-container {
+  overflow-x: auto;
+  border: 2px solid #333;
+  border-radius: 8px;
+}
+
+.meetings-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.meetings-table thead {
+  background-color: #f5f5f5;
+}
+
+.meetings-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+  border-bottom: 2px solid #333;
+  font-size: 1rem;
+}
+
+.meetings-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.meetings-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.meetings-table tbody tr:hover {
+  background-color: #f9f9f9;
+}
+
+.acta-btn {
+  padding: 10px 20px;
+  border: 2px solid #333;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+.acta-btn.enviada {
+  background-color: #4CAF50;
+  color: white;
+  border-color: #2E7D32;
+}
+
+.acta-btn.enviada:hover {
+  background-color: #45a049;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.acta-btn.no-realizada {
+  background-color: white;
+  color: #333;
+  border-color: #333;
+}
+
+.acta-btn.no-realizada:hover {
+  background-color: #e8f5e9;
+  border-color: #4CAF50;
+  color: #2E7D32;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .filters-bar {
+    gap: 10px;
+  }
+
+  .filter-btn,
+  .apply-filters-btn {
+    padding: 6px 15px;
+    font-size: 0.85rem;
+  }
+
+  .table-container {
+    overflow-x: scroll;
+  }
+
+  .meetings-table {
+    min-width: 800px;
+  }
+
+  .meetings-table th,
+  .meetings-table td {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .acta-btn {
+    padding: 8px 15px;
+    font-size: 0.8rem;
+  }
+}

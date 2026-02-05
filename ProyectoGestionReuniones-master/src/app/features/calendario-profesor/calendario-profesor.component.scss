@@ -1,0 +1,125 @@
+.main-content {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 350px;
+  gap: 30px;
+  background-color: #f5f5f5;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* --- CALENDARIO --- */
+.calendar-section h2 { margin-bottom: 20px; color: #333; }
+
+.calendar {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    .nav-btn-cal {
+      background: #1e88e5;
+      color: white;
+      border: none;
+      padding: 5px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  }
+
+  .calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 10px;
+  }
+
+  .calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+
+    .day {
+      padding: 15px 5px;
+      text-align: center;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: 0.3s;
+
+      &.available:hover { background-color: #e3f2fd; }
+      &.selected { background-color: #1e88e5; color: white; font-weight: bold; }
+      &.disabled { color: #ccc; cursor: not-allowed; }
+      &.empty { cursor: default; }
+    }
+  }
+}
+
+/* --- PANEL DE HORAS --- */
+.hours-panel {
+  display: flex;
+  flex-direction: column;
+  
+  h2 { font-size: 1.2rem; margin-bottom: 20px; color: #333; }
+
+  .hours-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 25px;
+  }
+
+  .hour-btn {
+    padding: 15px;
+    border: 2px solid #42A5F5;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    // ESTADO DESMARCADO (Por defecto)
+    background-color: white;
+    color: #42A5F5;
+
+    // ESTADO MARCADO
+    &.selected {
+      background-color: #42A5F5;
+      color: white;
+    }
+
+    &:hover:not(.selected) {
+      background-color: #f0f8ff;
+    }
+  }
+
+  .confirm-btn {
+    padding: 15px;
+    background-color: #2e7d32;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover { background-color: #1b5e20; }
+  }
+}
+
+/* Responsive */
+@media (max-width: 850px) {
+  .container { grid-template-columns: 1fr; }
+}

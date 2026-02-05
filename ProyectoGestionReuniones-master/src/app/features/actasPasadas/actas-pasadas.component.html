@@ -1,0 +1,17 @@
+<main>
+    <h2>Actas de reuniones pasadas</h2>
+
+    <div class="content-container">
+        <aside class="meeting-list">
+            <button *ngFor="let meeting of meetings" [class.selected]="meeting === selectedMeeting"
+                (click)="selectMeeting(meeting)" class="meeting-button">
+                {{ meeting.date | date:'yyyy/MM/dd' }} - {{ meeting.subject }}
+            </button>
+        </aside>
+
+        <section class="meeting-detail" *ngIf="selectedMeeting">
+            <h3>Acta del {{ selectedMeeting.date | date:'yyyy/MM/dd' }} - {{ selectedMeeting.subject }}</h3>
+            <p>{{ selectedMeeting.detail }}</p>
+        </section>
+    </div>
+</main>

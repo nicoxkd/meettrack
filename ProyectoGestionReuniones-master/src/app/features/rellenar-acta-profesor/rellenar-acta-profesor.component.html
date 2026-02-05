@@ -1,0 +1,21 @@
+<main class="main-content">
+    <div class="container">
+        <button class="btn-back" (click)="goBack()">← Volver</button>
+
+        <section class="acta-editor">
+            <h2>Redactar Acta de Reunión</h2>
+            <p class="subtitle">Reunión con <strong>{{ nombreAlumno }}</strong> ({{ reunionInfo }})</p>
+
+            <div class="form-group">
+                <label for="contenido">Contenido del acta:</label>
+                <textarea id="contenido" [(ngModel)]="contenido"
+                    placeholder="Escriba aquí los detalles, acuerdos y puntos discutidos en la reunión..." rows="15"
+                    class="acta-textarea"></textarea>
+            </div>
+
+            <div class="actions">
+                <button class="btn-save" (click)="guardarActa()">Guardar y Finalizar</button>
+            </div>
+        </section>
+    </div>
+</main>

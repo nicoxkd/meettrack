@@ -1,0 +1,18 @@
+<div class="acta-page-container">
+  <button class="btn-back" (click)="goBack()">← Volver</button>
+
+  <div class="acta-card">
+    <h2 class="acta-title">
+      Acta de la reunión con <strong>{{ acta.studentName }}, {{ acta.subject }}, {{ acta.date }}</strong>
+    </h2>
+
+    <div class="acta-content-box">
+      <p>{{ acta.content }}</p>
+    </div>
+
+    <div class="actions-footer">
+      <button class="btn-print" (click)="printActa()">Imprimir Acta</button>
+      <button class="btn-download" (click)="downloadActa()">Descargar PDF</button>
+    </div>
+  </div>
+</div>

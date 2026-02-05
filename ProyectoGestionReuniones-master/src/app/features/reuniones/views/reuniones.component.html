@@ -1,0 +1,39 @@
+<main class="main-content">
+  <div class="container">
+
+    <!-- Buscador -->
+    <div class="search-container">
+      <div class="search-box">
+        <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <circle cx="8" cy="8" r="6" stroke="#666" stroke-width="2" />
+          <path d="M12 12L18 18" stroke="#666" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <input type="text" placeholder="Buscar" class="search-input" [(ngModel)]="searchTerm">
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="filters-bar">
+      <span class="filter-label">Filtros:</span>
+      <button class="filter-btn" *ngFor="let filter of filters" [class.active]="activeFilter === filter.value"
+        (click)="toggleFilter(filter.value)">
+        {{ filter.label }}
+      </button>
+      <button class="apply-filters-btn" (click)="applyFilters()">Aplicar filtros</button>
+    </div>
+
+    <h2 class="section-title">Próximas reuniones</h2>
+
+    <!-- Lista de reuniones -->
+    <div class="meetings-list">
+      <div class="meeting-card" *ngFor="let meeting of filteredMeetings">
+        <div class="meeting-info">
+          <div class="meeting-date">{{ meeting.date | date:'yyyy/MM/dd' }}</div>
+          <div class="meeting-subject">{{ meeting.subject }}</div>
+        </div>
+        <div class="meeting-teacher">{{ meeting.teacher }}</div>
+        <button class="cancel-btn" (click)="cancelMeeting(meeting)">Cancelar reunión</button>
+      </div>
+    </div>
+  </div>
+</main>

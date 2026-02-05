@@ -1,0 +1,63 @@
+/* Importamos los estilos globales primero */
+@import 'src/assets/styles/global';
+
+/* ------------------- ESTILOS ESPECÍFICOS DE ASIGNATURAS ------------------- */
+.container {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center; /* Centra el panel de asignaturas */
+}
+
+.asignaturas-panel {
+  background-color: #E0E0E0; /* Fondo gris detrás de los botones */
+  padding: 30px;
+  border-radius: 8px;
+  min-width: 400px; /* Ancho mínimo para que las columnas no se achiquen */
+  max-width: 800px; /* Limita el ancho máximo */
+  width: 100%;
+}
+
+.page-title {
+  font-size: 1.5rem;
+  color: #333;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  gap: 15px;
+}
+
+.subject-btn {
+  padding: 15px;
+  background-color: #42A5F5;
+  color: white;
+  border: 2px solid #1E88E5;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.subject-btn:hover {
+  background-color: #1E88E5;
+  transform: translateY(-2px);
+}
+
+/* ------------------- RESPONSIVE ------------------- */
+@media (max-width: 768px) {
+  .subjects-grid {
+    grid-template-columns: 1fr; /* Una columna en móvil */
+  }
+
+  .asignaturas-panel {
+    padding: 20px;
+  }
+
+  .page-title {
+    font-size: 1.3rem;
+  }
+}

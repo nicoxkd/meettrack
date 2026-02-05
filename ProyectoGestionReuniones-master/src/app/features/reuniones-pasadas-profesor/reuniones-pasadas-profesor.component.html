@@ -1,0 +1,49 @@
+<div class="past-meetings-container">
+  <h1 class="page-title">Reuniones pasadas</h1>
+
+  <div class="search-container">
+    <div class="search-box">
+      <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+        <circle cx="8" cy="8" r="6" stroke="#666" stroke-width="2" />
+        <path d="M12 12L18 18" stroke="#666" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <input type="text" [(ngModel)]="searchTerm" (input)="filterMeetings()" placeholder="Buscar por alumno o fecha..."
+        class="search-input">
+    </div>
+  </div>
+
+  <div class="table-container">
+    <div *ngIf="loading" class="loading-text">Cargando reuniones pasadas...</div>
+    <div *ngIf="!loading && filteredMeetings.length === 0" class="no-data-text">No hay reuniones pasadas que coincidan.
+    </div>
+
+    <table class="meetings-table" *ngIf="!loading && filteredMeetings.length > 0">
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Fecha</th>
+          <th>Hora</th>
+          <th>Estado Acta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let meeting of filteredMeetings">
+          <td>{{ meeting.studentName }}</td>
+          <td>{{ meeting.displayDate }}</td>
+          <td>{{ meeting.time }}</td>
+          <td>
+            <button *ngIf="meeting.estado !== 'finalizada'" class="acta-btn no-realizada"
+              (click)="rellenarActa(meeting)">
+              Rellenar Acta
+            </button>
+
+            <button *ngIf="meeting.estado === 'finalizada'" class="acta-btn enviada" [routerLink]="['/actas']"
+              [queryParams]="{ idReunion: meeting.id_reunion }">
+              Ver Acta
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

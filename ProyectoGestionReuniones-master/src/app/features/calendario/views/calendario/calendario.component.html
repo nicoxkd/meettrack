@@ -1,0 +1,59 @@
+<main class="main-content">
+  <div class="container">
+    <!-- Calendario a la izquierda -->
+    <section class="calendar-section">
+      <h2>Inglés Profesional</h2>
+      <div class="calendar">
+        <div class="calendar-header">
+          <button class="nav-btn-cal" (click)="prevMonth()">&lt;</button>
+          <h3 id="monthYear">{{ getMonthYear() }}</h3>
+          <button class="nav-btn-cal" (click)="nextMonth()">&gt;</button>
+        </div>
+        <div class="calendar-weekdays">
+          <div class="weekday" *ngFor="let day of weekdays">{{ day }}</div>
+        </div>
+        <div class="calendar-days">
+          <div class="day" *ngFor="let day of calendarDays" [ngClass]="{
+              'empty': day.empty,
+              'disabled': day.disabled,
+              'available': !day.empty && !day.disabled,
+              'selected': selectedDate?.getDate() === day.day && !day.empty && !day.disabled,
+              'has-slots': day.hasSlots
+            }" (click)="selectDay(day)">
+            {{ day.empty ? '' : day.day }}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Panel de horas a la derecha -->
+    <aside class="hours-panel">
+      <h2>Horas disponibles</h2>
+
+      <div *ngIf="selectedDate; else noDateSelected">
+        <p class="selected-date-label">Para el {{ selectedDate | date:'dd/MM/yyyy' }}</p>
+
+        <div class="hours-container" *ngIf="availableSlotsForDay.length > 0; else noSlots">
+          <button class="hour-btn" *ngFor="let slot of availableSlotsForDay" [class.selected]="selectedSlot === slot"
+            (click)="selectSlot(slot)">
+            <span class="slot-time">{{ slot.hora.slice(0, 5) }}</span>
+            <span class="separator"> - </span>
+            <span class="slot-prof">{{ slot.nombre }} {{ slot.apellidos }}</span>
+          </button>
+        </div>
+
+        <ng-template #noSlots>
+          <p class="no-slots-msg">No hay huecos libres para este día.</p>
+        </ng-template>
+      </div>
+
+      <ng-template #noDateSelected>
+        <p class="instruction-msg">Selecciona un día en el calendario para ver disponibilidad.</p>
+      </ng-template>
+
+      <button class="confirm-btn" [disabled]="!selectedSlot" (click)="confirmMeeting()">
+        Confirmar reunión
+      </button>
+    </aside>
+  </div>
+</main>

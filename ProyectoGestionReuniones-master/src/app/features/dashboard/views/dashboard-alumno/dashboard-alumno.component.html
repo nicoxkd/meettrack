@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal de Reuniones</title>
+</head>
+
+<body>
+    <main>
+        <div class="container">
+            <aside class="action-panel">
+                <button class="action-btn" routerLink="/asignaturas">Solicitar reunión</button>
+                <button class="action-btn" routerLink="/reuniones">Ver reuniones</button>
+                <button class="action-btn" routerLink="/actas">Consultar actas</button>
+            </aside>
+
+            <section class="meetings-panel">
+                <h2>Próximas reuniones</h2>
+                <div *ngIf="loading">Cargando reuniones...</div>
+                <div *ngIf="!loading && reuniones.length === 0">No tienes reuniones programadas.</div>
+
+                <div class="meeting" *ngFor="let reunion of reuniones">
+                    <p>{{ reunion.fecha | date:'yyyy/MM/dd' }} a las {{ reunion.hora }} con {{ reunion.nombre_profesor
+                        }}
+                        {{ reunion.apellidos_profesor }}</p>
+                </div>
+            </section>
+        </div>
+
+        <router-outlet></router-outlet>
+
+    </main>
+
+</body>
+
+</html>

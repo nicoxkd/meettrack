@@ -1,0 +1,37 @@
+<header>
+  <button class="menu-toggle" (click)="toggleSidebar()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <div class="logo">
+    <img src="assets/img/Logo.png" alt="Logo" />
+  </div>
+  <h1>¡Bienvenido, {{ nombreUsuario }}!</h1>
+</header>
+
+<nav class="sidebar" [class.active]="sidebarActive">
+  <!-- Menú Alumno -->
+  <ng-container *ngIf="rolUsuario === 'alumno'">
+    <button class="nav-btn" routerLink="/dashboard">DashBoard</button>
+    <button class="nav-btn" routerLink="/reuniones">Reuniones</button>
+    <button class="nav-btn" routerLink="/actas">Actas</button>
+  </ng-container>
+
+  <!-- Menú Profesor -->
+  <ng-container *ngIf="rolUsuario === 'profesor'">
+    <button class="nav-btn" routerLink="/dashboardprofesor">DashBoard</button>
+    <button class="nav-btn" routerLink="/calendarioprofesor">Calendario</button>
+    <button class="nav-btn" routerLink="/reunionesprofesor">Próximas Reuniones</button>
+    <button class="nav-btn" routerLink="/notificacionesprofesor">Notificaciones</button>
+    <button class="nav-btn" routerLink="/reunionespasadasprofesor">Reuniones Pasadas</button>
+  </ng-container>
+
+  <button class="nav-btn" routerLink="/faq">Ayuda/FAQs</button>
+  <button class="nav-btn" (click)="logout()">Cerrar sesión</button>
+</nav>
+
+
+<main>
+  <router-outlet></router-outlet>
+</main>

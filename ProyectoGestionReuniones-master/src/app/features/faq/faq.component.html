@@ -1,0 +1,17 @@
+<div class="faq-container">
+    <div class="faq-header">
+        <h1>Bienvenido a nuestra sección de Preguntas Frecuentes (FAQs). Aquí encontrarás respuestas claras y directas a las dudas más comunes sobre nuestros servicios. Hemos recopilado la información esencial para ayudarte a resolver tus preguntas de forma rápida y sencilla, sin necesidad de buscar en otros apartados.</h1>
+    </div>
+
+    <div class="faq-item" *ngFor="let faq of faqs; let i = index" [class.active]="activeIndex === i">
+        <div class="faq-question" (click)="toggleFAQ(i)">
+            <h2>{{ faq.question }}</h2>
+            <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">
+            <div class="faq-answer-content">
+                {{ faq.answer }}
+            </div>
+        </div>
+    </div>
+</div>
