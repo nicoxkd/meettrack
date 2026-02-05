@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Necesario para standalone
 import { ActivatedRoute, RouterModule } from '@angular/router'; // Para capturar el ID y navegar
+import jsPDF from 'jspdf';
 
 interface Acta {
   id: number;
@@ -76,7 +77,43 @@ export class ActaPasadaProfesorComponent implements OnInit {
   }
 
   downloadActa(): void {
-    console.log('Descargando acta:', this.acta.id);
+    if (!this.acta) return;
+
+    const doc = new jsPDF();
+    const margin = 20;
+    const pageWidth = doc.internal.pageSize.getWidth();
+
+    // Título
+    doc.setFontSize(22);
+    doc.setTextColor(40, 44, 52);
+    doc.text('Acta de Reunión', pageWidth / 2, 30, { align: 'center' });
+
+    // Línea divisoria
+    doc.setLineWidth(0.5);
+    doc.line(margin, 35, pageWidth - margin, 35);
+
+    // Información general
+    doc.setFontSize(12);
+    doc.setTextColor(100);
+    doc.text(`Alumno: ${this.acta.studentName}`, margin, 50);
+    doc.text(`Asunto: ${this.acta.subject}`, margin, 60);
+    doc.text(`Fecha: ${this.acta.date}`, margin, 70);
+
+    // Contenido del acta
+    doc.setFontSize(14);
+    doc.setTextColor(0);
+    doc.text('Detalles del acta:', margin, 90);
+
+    doc.setFontSize(11);
+    const splitText = doc.splitTextToSize(this.acta.content, pageWidth - (margin * 2));
+    doc.text(splitText, margin, 100);
+
+    // Pie de página
+    doc.setFontSize(10);
+    doc.setTextColor(150);
+    doc.text('Generado por MeetTrack', pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+
+    doc.save(`Acta_${this.acta.studentName.replace(/ /g, '_')}_${this.acta.date.replace(/\//g, '-')}.pdf`);
   }
 
   printActa(): void {

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ReunionesService } from './services/reuniones.service';
+import { ModalService } from '../../../shared/services/modal.service';
 
 interface Meeting {
   id?: string;
@@ -33,7 +34,10 @@ export class ReunionesComponent implements OnInit {
   activeFilter: string | null = null;
   cargando: boolean = true;
 
-  constructor(private reunionesService: ReunionesService) { }
+  constructor(
+    private reunionesService: ReunionesService,
+    private modalService: ModalService
+  ) { }
 
   ngOnInit(): void {
     this.cargarReunionesReales();
@@ -121,20 +125,24 @@ export class ReunionesComponent implements OnInit {
   }
 
   cancelMeeting(meeting: Meeting): void {
-    const confirmCancel = confirm(`¿Estás seguro de que quieres cancelar la reunión de ${meeting.subject}?`);
-
-    if (confirmCancel && meeting.id) {
-      this.reunionesService.cancelarReunion(meeting.id).subscribe({
-        next: () => {
-          this.meetings = this.meetings.filter(m => m.id !== meeting.id);
-          this.filteredMeetings = this.filteredMeetings.filter(m => m.id !== meeting.id);
-          alert('Reunión cancelada correctamente.');
-        },
-        error: (err) => {
-          console.error('Error al cancelar', err);
-          alert('No se pudo cancelar la reunión. Inténtalo luego.');
-        }
-      });
-    }
+    this.modalService.confirm(
+      'Cancelar reunión',
+      `¿Estás seguro de que quieres cancelar la reunión de ${meeting.subject}?`,
+      'Cancelar Reunión'
+    ).then(confirmed => {
+      if (confirmed && meeting.id) {
+        this.reunionesService.cancelarReunion(meeting.id).subscribe({
+          next: () => {
+            this.meetings = this.meetings.filter(m => m.id !== meeting.id);
+            this.filteredMeetings = this.filteredMeetings.filter(m => m.id !== meeting.id);
+            this.modalService.alert('Éxito', 'Reunión cancelada correctamente.');
+          },
+          error: (err) => {
+            console.error('Error al cancelar', err);
+            this.modalService.alert('Error', 'No se pudo cancelar la reunión. Inténtalo luego.');
+          }
+        });
+      }
+    });
   }
 }

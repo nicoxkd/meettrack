@@ -10,7 +10,10 @@
         </aside>
 
         <section class="meeting-detail" *ngIf="selectedMeeting">
-            <h3>Acta del {{ selectedMeeting.date | date:'yyyy/MM/dd' }} - {{ selectedMeeting.subject }}</h3>
+            <div class="detail-header">
+                <h3>{{ selectedMeeting.subject }} - {{ selectedMeeting.date | date:'yyyy/MM/dd' }}</h3>
+                <button class="pdf-btn" (click)="downloadPDF()">Descargar PDF</button>
+            </div>
             <p>{{ selectedMeeting.detail }}</p>
         </section>
     </div>
