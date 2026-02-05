@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ReunionesService } from '../reuniones/views/services/reuniones.service';
+import { ActasService } from '../actasPasadas/services/actas.service';
+import { ModalService } from '../../shared/services/modal.service';
+import { forkJoin } from 'rxjs';
 
 interface Meeting {
   id_reunion: string;
@@ -12,6 +15,7 @@ interface Meeting {
   time: string;
   studentName: string;
   estado: string;
+  id_acta?: string;
 }
 
 @Component({
@@ -29,7 +33,9 @@ export class ReunionesPasadasProfesorComponent implements OnInit {
 
   constructor(
     private reunionesService: ReunionesService,
-    private router: Router
+    private actasService: ActasService,
+    private router: Router,
+    private modalService: ModalService
   ) { }
 
   ngOnInit(): void {
@@ -40,41 +46,66 @@ export class ReunionesPasadasProfesorComponent implements OnInit {
   }
 
   cargarReuniones(dni: string) {
-    this.reunionesService.getReunionesProfesor(dni).subscribe({
-      next: (data: any[]) => {
+    this.loading = true;
+    forkJoin({
+      reuniones: this.reunionesService.getReunionesProfesor(dni),
+      actas: this.actasService.getActasProfesor(dni)
+    }).subscribe({
+      next: ({ reuniones, actas }) => {
         const now = new Date();
+        const merged: Meeting[] = [];
+        const processedReunionIds = new Set<string>();
 
-        this.meetings = data
-          .map(m => {
-            const horaInicio = m.hora.split(' - ')[0];
-            const [horas, minutos] = horaInicio.split(':');
-            const fechaReunion = new Date(m.fecha);
-            if (horas && minutos) {
-              fechaReunion.setHours(parseInt(horas), parseInt(minutos), 0);
-            }
+        // 1. Procesar reuniones (past or finalized)
+        reuniones.forEach((m: any) => {
+          const horaInicio = m.hora.split(' - ')[0];
+          const [horas, minutos] = horaInicio.split(':');
+          const fechaReunion = new Date(m.fecha);
+          if (horas && minutos) {
+            fechaReunion.setHours(parseInt(horas), parseInt(minutos), 0);
+          }
 
-            const unaHoraDespues = new Date(fechaReunion.getTime() + 60 * 60 * 1000);
-            const esPasada = now > unaHoraDespues;
+          const unaHoraDespues = new Date(fechaReunion.getTime() + 60 * 60 * 1000);
+          const esPasada = now > unaHoraDespues;
 
-            return {
+          if (esPasada || m.estado === 'finalizada') {
+            merged.push({
               id_reunion: m.id_reunion,
               id_alumno: m.dni_alumno,
               date: m.fecha,
               displayDate: new Date(m.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }),
               time: m.hora,
               studentName: m.nombre_alumno || 'Alumno desconocido',
-              estado: m.estado,
-              isPasada: esPasada
-            };
-          })
-          .filter(m => m.isPasada);
+              estado: m.estado
+            });
+            processedReunionIds.add(m.id_reunion);
+          }
+        });
 
+        // 2. Procesar actas que no tengan reunión en la lista (reuniones huérfanas o borradas)
+        actas.forEach((a: any) => {
+          if (!a.id_reunion || !processedReunionIds.has(a.id_reunion)) {
+            merged.push({
+              id_reunion: a.id_reunion || '',
+              id_acta: a.id_acta,
+              id_alumno: a.id_alumno,
+              date: a.fecha_creacion,
+              displayDate: new Date(a.fecha_creacion).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' }),
+              time: new Date(a.fecha_creacion).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),
+              studentName: a.nombre_alumno || 'Alumno desconocido',
+              estado: 'finalizada'
+            });
+          }
+        });
+
+        this.meetings = merged;
         this.filteredMeetings = [...this.meetings];
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error al cargar reuniones pasadas', err);
+        console.error('Error al cargar datos históricos', err);
         this.loading = false;
+        this.modalService.alert('Error', 'No se pudieron cargar las reuniones pasadas.');
       }
     });
   }

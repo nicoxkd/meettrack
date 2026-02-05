@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ActasService } from './services/actas.service';
+import { ModalService } from '../../shared/services/modal.service';
 import jsPDF from 'jspdf';
 
 interface Meeting {
@@ -23,7 +24,8 @@ export class ActasComponent implements OnInit {
 
   constructor(
     private actasService: ActasService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalService: ModalService
   ) { }
 
   ngOnInit() {
@@ -58,7 +60,12 @@ export class ActasComponent implements OnInit {
           // Lógica de Selección Inteligente
           this.route.queryParams.subscribe(params => {
             const targetIdReunion = params['idReunion'];
-            if (targetIdReunion) {
+            const targetIdActa = params['idActa'];
+
+            if (targetIdActa) {
+              const found = this.meetings.find(m => m.id === targetIdActa);
+              if (found) this.selectedMeeting = found;
+            } else if (targetIdReunion) {
               const found = this.meetings.find(m => m.id_reunion === targetIdReunion);
               if (found) {
                 this.selectedMeeting = found;
@@ -128,6 +135,11 @@ export class ActasComponent implements OnInit {
     doc.setTextColor(150);
     doc.text('Generado por MeetTrack', pageWidth / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
 
-    doc.save(`Acta_${this.selectedMeeting.date}.pdf`);
+    try {
+      doc.save(`Acta_${this.selectedMeeting.date}.pdf`);
+    } catch (error) {
+      console.error('Error saving PDF:', error);
+      this.modalService.alert('Error', 'No se pudo generar el PDF. Por favor, inténtelo de nuevo.');
+    }
   }
 }

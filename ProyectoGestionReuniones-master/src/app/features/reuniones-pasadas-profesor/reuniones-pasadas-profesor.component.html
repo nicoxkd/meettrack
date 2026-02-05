@@ -38,7 +38,7 @@
             </button>
 
             <button *ngIf="meeting.estado === 'finalizada'" class="acta-btn enviada" [routerLink]="['/actas']"
-              [queryParams]="{ idReunion: meeting.id_reunion }">
+              [queryParams]="{ idReunion: meeting.id_reunion, idActa: meeting.id_acta }">
               Ver Acta
             </button>
           </td>
